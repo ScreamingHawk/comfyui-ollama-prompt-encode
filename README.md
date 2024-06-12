@@ -14,6 +14,8 @@ The `Ollama CLIP Prompt Encode` node is designed to replace the default `CLIP Te
 
 The node will output the generated prompt as a `string`. This can be viewed with [rgthree's `Display Any` node](https://github.com/rgthree/rgthree-comfy?tab=readme-ov-file#display-any).
 
+An [example workflow](./docs/ollama_basic_workflow.json) is available in the `docs` folder.
+
 ### Ollama URL
 
 The URL to the Ollama service. The default is `http://localhost:11434`.
@@ -27,6 +29,8 @@ Some models that work well with this prompt generator are:
 - `orca-mini`
 - `mistral`
 - `tinyllama`
+
+Smaller models are recommended for faster generation times.
 
 ### Prepend Tags
 
