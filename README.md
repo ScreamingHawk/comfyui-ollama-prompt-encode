@@ -6,6 +6,8 @@ A prompt generator and CLIP encoder using AI provided by [Ollama](https://ollama
 
 Install [Ollama](https://ollama.com) and have the service running.
 
+This node has been tested with ollama version `0.1.42`.
+
 ## Usage
 
 ![Example Usage](./docs/usage_1.png)
@@ -29,6 +31,8 @@ Some models that work well with this prompt generator are:
 - `orca-mini`
 - `mistral`
 - `tinyllama`
+
+The node will automatically download the model if it is not already present on your system.
 
 Smaller models are recommended for faster generation times.
 

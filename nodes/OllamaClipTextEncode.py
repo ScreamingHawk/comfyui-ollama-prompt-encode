@@ -5,7 +5,8 @@
 @description: Use AI to generate prompts and perform CLIP text encoding
 """
 
-import requests
+from ollama import Client
+from typing import Mapping
 
 class OllamaCLIPTextEncode:
     # Defaults
@@ -27,7 +28,10 @@ class OllamaCLIPTextEncode:
             }
         }
 
-    RETURN_TYPES = ("CONDITIONING", "STRING",)
+    RETURN_TYPES = (
+        "CONDITIONING",
+        "STRING",
+    )
     RETURN_NAMES = (
         "conditioning",
         "prompt",
@@ -42,26 +46,26 @@ class OllamaCLIPTextEncode:
 
     def generate_prompt(self, ollama_url, ollama_model, text):
         """Get a prompt from the Ollama API."""
-        response = requests.post(
-            f"{ollama_url}/api/chat",
-            json={
-                "model": ollama_model,
-                "messages": [
-                    {"role": "system", "content": self.OLLAMA_SYSTEM_MESSAGE},
-                    {"role": "user", "content": "Write a prompt for " + self.OLLAMA_EXAMPLE_TEXT},
-                    {"role": "assistant", "content": self.OLLAMA_EXAMPLE_PROMPT},
-                    {"role": "user", "content": "Write a prompt for " + text},
-                ],
-                "stream": False
-            }
+        ollama_client = Client(host=ollama_url)
+
+        # Download the model if it doesn't exist
+        ollama_client.pull(ollama_model)
+
+        response = ollama_client.chat(
+            model=ollama_model,
+            stream=False,
+            messages=[
+                {"role": "system", "content": self.OLLAMA_SYSTEM_MESSAGE},
+                {"role": "user", "content": "Write a prompt for " + self.OLLAMA_EXAMPLE_TEXT,},
+                {"role": "assistant", "content": self.OLLAMA_EXAMPLE_PROMPT},
+                {"role": "user", "content": "Write a prompt for " + text},
+            ],
         )
 
-        if response.status_code == 404:
-            # 404 thrown when model not found
-            raise ValueError("Ollama model not found")
+        # Streaming not supported
+        if not isinstance(response, Mapping):
+            raise ValueError("Streaming not supported")
 
-        response.raise_for_status()
-        response = response.json()
         prompt = response["message"]["content"]
 
         return prompt
