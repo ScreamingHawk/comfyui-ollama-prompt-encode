@@ -1,7 +1,7 @@
 """
 @author: Michael Standen
-@title: Ollama Prompt Generator
-@nickname: Ollama Prompt Gen
+@title: Ollama Prompt Encode
+@nickname: Ollama Prompt Encode
 @description: Use AI to generate prompts and perform CLIP text encoding
 """
 
