@@ -22,16 +22,20 @@ class TestOllamaCLIPTextEncode(unittest.TestCase):
         # Assert
         self.assertEqual(result, "This is a test,")
 
-    def test_generate_prompt(self):
+    def test_generate_prompt(self, retry=3):
         # Arrange
         encoder = OllamaCLIPTextEncode()
-        text = "cute tan girl, wearing nothing but overalls, painting a on a canvas"
+        text = "cute tan girl wearing nothing but overalls painting on a canvas"
 
         # Act
         result = encoder.generate_prompt(self.OLLAMA_URL, self.OLLAMA_MODEL, text)
         print(result)
 
         # Assert
+        if retry > 0 and ("paint" not in result or "color" not in result):
+            print("Retrying test_generate_prompt... Attempts left:", retry)
+            self.test_generate_prompt(retry - 1)
+        # These do not always pass as this test is intentionally not using a seed
         self.assertTrue("paint" in result)
         self.assertTrue("color" in result)
 

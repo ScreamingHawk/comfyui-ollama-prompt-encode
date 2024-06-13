@@ -7,9 +7,11 @@
 
 from ollama import Client
 from typing import Mapping
+from .timeout import timeout
 
 class OllamaCLIPTextEncode:
     # Defaults
+    OLLAMA_TIMEOUT = 30
     OLLAMA_URL = "http://localhost:11434"
     OLLAMA_MODEL = "orca-mini"
     OLLAMA_SYSTEM_MESSAGE = "You are a prompt engineer that generates prompts for image generation AI. The 'prompt' is short comma separated descriptors, NOT A SENTENCE. The user will describe an image, then you will respond with the 'prompt'. You will not write any text except the 'prompt'."
@@ -44,6 +46,7 @@ class OllamaCLIPTextEncode:
         """Sanitize the prompt for use in clip encoding."""
         return prompt.replace(".", ",")
 
+    @timeout(OLLAMA_TIMEOUT)
     def generate_prompt(self, ollama_url, ollama_model, text):
         """Get a prompt from the Ollama API."""
         ollama_client = Client(host=ollama_url)
