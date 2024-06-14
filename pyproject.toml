@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-ollama-prompt-encode"
+description = "A prompt generator and CLIP encoder using AI provided by Ollama."
+version = "1.0.0"
+license = "LICENSE"
+dependencies = ["ollama==0.2.1"]
+
+[project.urls]
+Repository = "https://github.com/ScreamingHawk/comfyui-ollama-prompt-encode"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "comfyui-ollama-prompt-encode"
+Icon = ""
