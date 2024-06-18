@@ -19,4 +19,4 @@ Repository = "https://github.com/ScreamingHawk/comfyui-ollama-prompt-encode"
 [tool.comfy]
 PublisherId = "michaelstanden"
 DisplayName = "comfyui-ollama-prompt-encode"
-Icon = ""
+Icon = "docs/icon.png"
