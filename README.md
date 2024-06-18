@@ -36,6 +36,10 @@ The node will automatically download the model if it is not already present on y
 
 Smaller models are recommended for faster generation times.
 
+### Seed
+
+The seed that will be used to generate the prompt. This is useful for generating the same prompt multiple times or ensuring a different prompt is generated each time.
+
 ### Prepend Tags
 
 A string that will be prepended to the generated prompt.
