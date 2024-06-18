@@ -5,7 +5,7 @@
 @description: Use AI to generate prompts and perform CLIP text encoding
 """
 
-from ollama import Client
+from ollama import Client, Options
 from typing import Mapping
 from .timeout import timeout
 
@@ -25,6 +25,7 @@ class OllamaCLIPTextEncode:
                 "clip": ("CLIP",),
                 "ollama_url": ("STRING", {"default": cls.OLLAMA_URL}),
                 "ollama_model": ("STRING", {"default": cls.OLLAMA_MODEL}),
+                "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
                 "prepend_tags": ("STRING", {"multiline": True, "dynamicPrompts": True}),
                 "text": ("STRING", {"multiline": True, "dynamicPrompts": True}),
             }
@@ -47,12 +48,16 @@ class OllamaCLIPTextEncode:
         return prompt.replace(".", ",")
 
     @timeout(OLLAMA_TIMEOUT)
-    def generate_prompt(self, ollama_url, ollama_model, text):
+    def generate_prompt(self, ollama_url, ollama_model, text, seed: int|None = None):
         """Get a prompt from the Ollama API."""
         ollama_client = Client(host=ollama_url)
 
         # Download the model if it doesn't exist
         ollama_client.pull(ollama_model)
+
+        opts = Options()
+        if seed is not None:
+            opts["seed"] = seed
 
         response = ollama_client.chat(
             model=ollama_model,
@@ -63,6 +68,7 @@ class OllamaCLIPTextEncode:
                 {"role": "assistant", "content": self.OLLAMA_EXAMPLE_PROMPT},
                 {"role": "user", "content": "Write a prompt for " + text},
             ],
+            options=opts
         )
 
         # Streaming not supported
@@ -73,9 +79,10 @@ class OllamaCLIPTextEncode:
 
         return prompt
 
-    def get_encoded(self, clip, ollama_url, ollama_model, prepend_tags, text):
+    def get_encoded(self, clip, ollama_url, ollama_model, seed, prepend_tags, text):
         """Gets and encodes the prompt using CLIP."""
-        prompt = self.generate_prompt(ollama_url, ollama_model, text)
+        use_seed = seed if seed != 0 else None
+        prompt = self.generate_prompt(ollama_url, ollama_model, text, use_seed)
         combined_prompt = prepend_tags + ", " + self.sanitize_prompt(prompt)
 
         tokens = clip.tokenize(combined_prompt)
