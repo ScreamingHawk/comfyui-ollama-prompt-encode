@@ -2,11 +2,44 @@
 
 A prompt generator and CLIP encoder using AI provided by [Ollama](https://ollama.com).
 
+![Example Usage](./docs/usage_1.png)
+
 ## Prerequisites
 
 Install [Ollama](https://ollama.com) and have the service running.
 
 This node has been tested with ollama version `0.1.42`.
+
+## Installation
+
+Choose one of the following methods to install the node:
+
+### via ComfyUI Manager
+
+If you have the [ComfyUI Manager](https://github.com/ltdrdata/ComfyUI-Manager) installed, you can install the node from the `Install Custom Nodes`.
+
+Search for `Ollama Prompt Encode` and click `Install`.
+
+![ComfyUI Manager](./docs/comfyui_manager.png)
+
+### via Comfy CLI
+
+If you have the [Comfy CLI](https://github.com/Comfy-Org/comfy-cli) installed, you can install the node from the command line.
+
+```sh
+comfy node registry-install comfyui-ollama-prompt-encode
+```
+
+The registry instance can be found on (registry.comfy.org)[https://registry.comfy.org/publishers/michaelstanden/nodes/comfyui-ollama-prompt-encode].
+
+### via Git
+
+Clone this repository into your `<comfyui>/custom_nodes` directory.
+
+```sh
+cd <comfyui>/custom_nodes
+git clone https://github.com/ScreamingHawk/comfyui-ollama-prompt-encode
+```
 
 ## Usage
 
