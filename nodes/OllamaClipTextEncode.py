@@ -5,18 +5,25 @@
 @description: Use AI to generate prompts and perform CLIP text encoding
 """
 
+import os
+import csv
 from ollama import Client, Options
 from typing import Mapping
 from .timeout import timeout
+
+# Read data from sample_data.csv
+fname = os.path.join(os.path.dirname(__file__), "sample_data.csv")
+sample_data = []
+with open(fname, "r") as fin:
+    reader = csv.DictReader(fin)
+    sample_data = [row for row in reader]
 
 class OllamaCLIPTextEncode:
     # Defaults
     OLLAMA_TIMEOUT = 30
     OLLAMA_URL = "http://localhost:11434"
     OLLAMA_MODEL = "orca-mini"
-    OLLAMA_SYSTEM_MESSAGE = "You are a prompt engineer that generates prompts for image generation AI. The 'prompt' is short comma separated descriptors, NOT A SENTENCE. The user will describe an image, then you will respond with the 'prompt'. You will not write any text except the 'prompt'."
-    OLLAMA_EXAMPLE_TEXT = "sexy sweaty cheerleader, jumping"
-    OLLAMA_EXAMPLE_PROMPT = "big smile, happy, joy, light blush, jumping, dynamic pose, cheerleader, cheerleader outfit, cheerleader pom poms, thigh highs, stockings, short pleated skirt, crop top, ribbons, bow on shirt, school gym, underboob, midriff, navel, no panties, natural skin, small breast, 20 year old, warm light, dappered light, golden hour, highly detailed, detailed,"
+    OLLAMA_SYSTEM_MESSAGE = "You describe pictures. I will give you a brief description of the picture. You reply with comma separated keywords that describe the picture. Describe clothing, pose, expression, setting, and any other details you can think of. Use comma separated keywords. Do not use sentences. Use brevity."
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -59,15 +66,18 @@ class OllamaCLIPTextEncode:
         if seed is not None:
             opts["seed"] = seed
 
+        messages = [
+            {"role": "system", "content": self.OLLAMA_SYSTEM_MESSAGE},
+        ]
+        for row in sample_data:
+            messages.append({"role": "user", "content": "Write a prompt for: " + row["text"]})
+            messages.append({"role": "assistant", "content": row["prompt"]})
+        messages.append({"role": "user", "content": "Write a prompt for: " + text})
+
         response = ollama_client.chat(
             model=ollama_model,
             stream=False,
-            messages=[
-                {"role": "system", "content": self.OLLAMA_SYSTEM_MESSAGE},
-                {"role": "user", "content": "Write a prompt for " + self.OLLAMA_EXAMPLE_TEXT,},
-                {"role": "assistant", "content": self.OLLAMA_EXAMPLE_PROMPT},
-                {"role": "user", "content": "Write a prompt for " + text},
-            ],
+            messages=messages,
             options=opts
         )
 
