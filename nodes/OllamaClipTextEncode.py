@@ -48,7 +48,7 @@ class OllamaCLIPTextEncode:
     )
     FUNCTION = "get_encoded"
 
-    CATEGORY = "conditioning"
+    CATEGORY = "Ollama"
 
     def sanitize_prompt(self, prompt):
         """Sanitize the prompt for use in clip encoding."""
