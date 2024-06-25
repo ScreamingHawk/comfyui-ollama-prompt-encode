@@ -4,9 +4,9 @@ import unittest
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from nodes.OllamaClipTextEncode import OllamaCLIPTextEncode
+from nodes.OllamaPromptGenerator import OllamaPromptGenerator
 
-class TestOllamaCLIPTextEncode(unittest.TestCase):
+class TestOllamaPromptGenerator(unittest.TestCase):
     # Default values
     OLLAMA_URL = "http://localhost:11434"
     OLLAMA_MODEL = "orca-mini"
@@ -14,7 +14,7 @@ class TestOllamaCLIPTextEncode(unittest.TestCase):
 
     def text_sanitize_prompt(self):
         # Arrange
-        encoder = OllamaCLIPTextEncode()
+        encoder = OllamaPromptGenerator()
         prompt = "This is a test."
 
         # Act
@@ -26,7 +26,7 @@ class TestOllamaCLIPTextEncode(unittest.TestCase):
     # Note this test is failing due to a bug in llama https://github.com/ScreamingHawk/comfyui-ollama-prompt-encode/issues/3
     def test_generate_prompt(self, retry=3):
         # Arrange
-        encoder = OllamaCLIPTextEncode()
+        encoder = OllamaPromptGenerator()
         text = "cute tan girl wearing nothing but overalls painting on a canvas"
 
         # Act
@@ -43,7 +43,7 @@ class TestOllamaCLIPTextEncode(unittest.TestCase):
 
     def test_generate_prompt_with_seed(self):
         # Arrange
-        encoder = OllamaCLIPTextEncode()
+        encoder = OllamaPromptGenerator()
         text = "princess cat on her throne"
 
         # Act
