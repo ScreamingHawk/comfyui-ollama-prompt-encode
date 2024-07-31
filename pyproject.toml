@@ -8,7 +8,7 @@ authors = [
 maintainers = [
   {name = "Michael Standen", email = "screaminghawk@gmail.com"},
 ]
-license = "LICENSE"
+license = { file = "LICENSE" }
 readme = "README.md"
 dependencies = ["ollama==0.2.1"]
 
