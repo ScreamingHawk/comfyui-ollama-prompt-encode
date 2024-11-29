@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-ollama-prompt-encode"
 description = "A prompt generator and CLIP encoder using AI provided by Ollama."
-version = "2.1.0"
+version = "2.2.0"
 authors = [
   {name = "Michael Standen", email = "screaminghawk@gmail.com"},
 ]
