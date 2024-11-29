@@ -10,7 +10,7 @@ maintainers = [
 ]
 license = { file = "LICENSE" }
 readme = "README.md"
-dependencies = ["ollama==0.2.1"]
+dependencies = ["ollama==0.4.2"]
 
 [project.urls]
 Repository = "https://github.com/ScreamingHawk/comfyui-ollama-prompt-encode"

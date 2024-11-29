@@ -62,6 +62,7 @@ class OllamaPromptGenerator:
         opts = Options()
         if seed is not None:
             opts["seed"] = seed
+            opts["temperature"] = 0.0
 
         messages = [
             {"role": "system", "content": self.OLLAMA_SYSTEM_MESSAGE},
@@ -73,14 +74,10 @@ class OllamaPromptGenerator:
 
         response = ollama_client.chat(
             model=ollama_model,
-            stream=False,
             messages=messages,
-            options=opts
+            options=opts,
+            stream=False,
         )
-
-        # Streaming not supported
-        if not isinstance(response, Mapping):
-            raise ValueError("Streaming not supported")
 
         prompt = response["message"]["content"]
 

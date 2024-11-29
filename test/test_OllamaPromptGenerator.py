@@ -23,7 +23,6 @@ class TestOllamaPromptGenerator(unittest.TestCase):
         # Assert
         self.assertEqual(result, "This is a test,")
 
-    # Note this test is failing due to a bug in llama https://github.com/ScreamingHawk/comfyui-ollama-prompt-encode/issues/3
     def test_generate_prompt(self, retry=3):
         # Arrange
         encoder = OllamaPromptGenerator()
