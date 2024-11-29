@@ -19,6 +19,7 @@ class OllamaCLIPTextEncode(OllamaPromptGenerator):
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff}),
                 "prepend_tags": ("STRING", {"multiline": True, "dynamicPrompts": True}),
                 "text": ("STRING", {"multiline": True, "dynamicPrompts": True}),
+                "comma_separated_response": ("BOOLEAN", {"default": True}),
             }
         }
 
@@ -34,9 +35,9 @@ class OllamaCLIPTextEncode(OllamaPromptGenerator):
 
     CATEGORY = "Ollama"
 
-    def get_encoded(self, clip, ollama_url, ollama_model, seed, prepend_tags, text):
+    def get_encoded(self, clip, ollama_url, ollama_model, seed, prepend_tags, text, comma_separated_response):
         """Gets and encodes the prompt using CLIP."""
-        combined_prompt = self.get_prompt(ollama_url, ollama_model, seed, prepend_tags, text)[0]
+        combined_prompt = self.get_prompt(ollama_url, ollama_model, seed, prepend_tags, text, comma_separated_response)[0]
 
         tokens = clip.tokenize(combined_prompt)
         cond, pooled = clip.encode_from_tokens(tokens, return_pooled=True)

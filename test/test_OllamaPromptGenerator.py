@@ -23,13 +23,13 @@ class TestOllamaPromptGenerator(unittest.TestCase):
         # Assert
         self.assertEqual(result, "This is a test,")
 
-    def test_generate_prompt(self, retry=3):
+    def test_generate_prompt_comma(self, retry=3):
         # Arrange
         encoder = OllamaPromptGenerator()
         text = "cute tan girl wearing nothing but overalls painting on a canvas"
 
         # Act
-        result = encoder.generate_prompt(self.OLLAMA_URL, self.OLLAMA_MODEL, text)
+        result = encoder.generate_prompt(self.OLLAMA_URL, self.OLLAMA_MODEL, text, None, True)
         print(result)
 
         # Assert
@@ -39,6 +39,27 @@ class TestOllamaPromptGenerator(unittest.TestCase):
         # These do not always pass as this test is intentionally not using a seed
         self.assertTrue("paint" in result)
         self.assertTrue("color" in result)
+        num_commas = result.count(",")
+        self.assertGreater(num_commas, 5)
+
+    def test_generate_prompt_descriptive(self, retry=3):
+        # Arrange
+        encoder = OllamaPromptGenerator()
+        text = "cute tan girl wearing nothing but overalls painting on a canvas"
+
+        # Act
+        result = encoder.generate_prompt(self.OLLAMA_URL, self.OLLAMA_MODEL, text, None, False)
+        print(result)
+
+        # Assert
+        if retry > 0 and ("paint" not in result or "color" not in result):
+            print("Retrying test_generate_prompt... Attempts left:", retry - 1)
+            self.test_generate_prompt_descriptive(retry - 1)
+        # These do not always pass as this test is intentionally not using a seed
+        self.assertTrue("paint" in result)
+        self.assertTrue("color" in result)
+        num_commas = result.count(",")
+        self.assertLess(num_commas, 5)
 
     def test_generate_prompt_with_seed(self):
         # Arrange
@@ -46,8 +67,8 @@ class TestOllamaPromptGenerator(unittest.TestCase):
         text = "princess cat on her throne"
 
         # Act
-        res1 = encoder.generate_prompt(self.OLLAMA_URL, self.OLLAMA_MODEL, text, self.SEED)
-        res2 = encoder.generate_prompt(self.OLLAMA_URL, self.OLLAMA_MODEL, text, self.SEED)
+        res1 = encoder.generate_prompt(self.OLLAMA_URL, self.OLLAMA_MODEL, text, self.SEED, True)
+        res2 = encoder.generate_prompt(self.OLLAMA_URL, self.OLLAMA_MODEL, text, self.SEED, True)
         print(res1)
         print(res2)
 

@@ -8,7 +8,7 @@ A prompt generator and CLIP encoder using AI provided by [Ollama](https://ollama
 
 Install [Ollama](https://ollama.com) and have the service running.
 
-This node has been tested with ollama version `0.1.42`.
+This node has been tested with ollama version `0.4.6`.
 
 ## Installation
 
@@ -82,6 +82,12 @@ This is useful for models like `pony` that work best with extra tags like `score
 ### Text
 
 The text that will be used by the AI model to generate the prompt.
+
+### Comma Separated Response
+
+If checked, the node will generate a prompt with a high number of tags separated by commas. e.g. `young girl, photorealistic, blue hair`. This is better for models that work better with more tags like `pony`.
+
+If unchecked, the node will generate a prompt with a more descriptive prompt. e.g. `A photorealistic image of a young girl with blue hair`. This is better for models that work better with more descriptive prompts like `Flux`.
 
 ## Testing
 
