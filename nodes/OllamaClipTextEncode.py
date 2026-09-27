@@ -40,5 +40,6 @@ class OllamaCLIPTextEncode(OllamaPromptGenerator):
         combined_prompt = self.get_prompt(ollama_url, ollama_model, seed, prepend_tags, text, comma_separated_response)[0]
 
         tokens = clip.tokenize(combined_prompt)
-        cond, pooled = clip.encode_from_tokens(tokens, return_pooled=True)
-        return ([[cond, {"pooled_output": pooled}]], combined_prompt)
+        cond_dict = clip.encode_from_tokens(tokens, return_pooled=True, return_dict=True)
+        cond = cond_dict.pop("cond")
+        return ([[cond, cond_dict]], combined_prompt)
